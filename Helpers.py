@@ -18,7 +18,8 @@ def search_product_database(query, max_results):
     return results[:max_results]
 
 def convert_currency(amount, from_currency, to_currency):
-    api_key = os.getenv("EXCHANGE_API_KEY")  # Make sure this exists in your .env
+    api_key = os.getenv("EXCHANGE_API_KEY")
+    # Used help from chatGPT to fix this method.
     if not api_key:
         return "API key not found."
 
