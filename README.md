@@ -43,3 +43,13 @@ Here are five example queries to demonstrate function calling:
 ```bash
 git clone https://github.com/pepportat/BuildingAIApps.git
 cd BuildingAIApps
+```
+
+### 2. Install all the Requirements.
+```
+pip install requirements
+```
+
+### 3. Optional, If you want to use the currency converter, then you need to register on the website and get a free API_KEY, then add it to the .env file
+
+### 4. To use the API just run the main.py file, then in the command line ask questions.
