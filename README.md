@@ -41,5 +41,5 @@ Here are five example queries to demonstrate function calling:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/llm-function-calling-chat.git
-cd llm-function-calling-chat
+git clone https://github.com/pepportat/BuildingAIApps.git
+cd BuildingAIApps
