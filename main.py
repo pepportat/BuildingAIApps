@@ -1,9 +1,12 @@
-import openai
+from openai import OpenAI
 import os
 import json
-from Helpers import  calculate_mortgage, search_product_database
+from Helpers import calculate_mortgage, search_product_database, convert_currency
+from dotenv import load_dotenv
 
-openai.api_key = os.getenv("OPEN_API_KEY")
+load_dotenv()
+
+client = OpenAI()
 
 function_definitions = [
     {
@@ -17,6 +20,19 @@ function_definitions = [
                 "years": {"type": "number"}
             },
             "required": ["principal", "rate", "years"]
+        }
+    },
+    {
+        "name": "convert_currency",
+        "description": "Convert money from one currency to another.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "amount": {"type": "number"},
+                "from_currency": {"type": "string"},
+                "to_currency": {"type": "string"}
+            },
+            "required": ["amount", "from_currency", "to_currency"]
         }
     },
     {
@@ -44,23 +60,25 @@ def run_chat():
 
         messages.append({"role": "user", "content": user_input})
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0613",
+        response = client.chat.completions.create(
+            model=os.getenv("OPEN_AI_MODEL"),
             messages=messages,
             functions=function_definitions,
             function_call="auto"
         )
 
-        message = response["choices"][0]["message"]
+        message = response.choices[0].message
 
-        if message.get("function_call"):
-            function_name = message["function_call"]["name"]
-            arguments = json.loads(message["function_call"]["arguments"])
+        if message.function_call:
+            function_name = message.function_call.name
+            arguments = json.loads(message.function_call.arguments)
 
             if function_name == "calculate_mortgage":
                 result = calculate_mortgage(**arguments)
             elif function_name == "search_product_database":
                 result = search_product_database(**arguments)
+            elif function_name == "convert_currency":
+                result = convert_currency(**arguments)
             else:
                 result = "Unknown function."
 
@@ -72,7 +90,7 @@ def run_chat():
                 "content": json.dumps(result)
             })
         else:
-            print(f"Assistant: {message['content']}")
+            print(f"Assistant: {message.content}")
 
 if __name__ == "__main__":
     run_chat()
