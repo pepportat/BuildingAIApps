@@ -94,3 +94,11 @@ def run_chat():
 
 if __name__ == "__main__":
     run_chat()
+
+# TEST QUESTIONS
+
+# 1. How much does an Iphone cost?
+# 2. What would be my monthly rate on that Iphone, if I bought with 10% interest for a 5 year period?
+# 3. How about for a 3 year period, with 5% interest?
+# 4. Convert that amount to Georgian Lari.
+# 5. Now convert that amount to Euro.
